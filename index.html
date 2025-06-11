@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +24,7 @@
       margin-top: 20px;
       border-radius: 16px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1.5s ease;
     }
     h1, h2 {
       color: #4a2c2a;
@@ -57,100 +57,116 @@
       height: 20px;
       background: url('https://i.imgur.com/WXagK5z.png') no-repeat center/contain;
       animation: fall linear infinite;
-      opacity: 0.8;
+      opacity: 0.6;
       pointer-events: none;
     }
     @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(120vh) rotate(360deg); }
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+      100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="intro">
     <h1>Every question here was curated carefully…</h1>
     <p>Been waiting for your honest answers since <strong>28 April</strong>.<br>No pressure — just give me a few honest answers.</p>
+    <button onclick="startQuiz()">Start</button>
+  </div>
 
-    <div class="question" id="q1">
-      <h2>1. Do you <em>really</em> have a boyfriend?</h2>
-      <button onclick="yesPath()">Yes</button>
-      <button onclick="noPath()">No</button>
-    </div>
+  <div class="container hidden question" id="q1">
+    <h2>1. Do you <em>really</em> have a boyfriend?</h2>
+    <button onclick="recordAnswer('q1', 'Yes'); yesPath()">Yes</button>
+    <button onclick="recordAnswer('q1', 'No'); noPath()">No</button>
+  </div>
 
-    <div id="yesPath" class="hidden">
-      <p>Okay, I understand.<br>
-      Thanks for being honest.<br>
-      I swear I won’t trouble you again — won’t text you, won’t show up, not even my face.<br>
-      Wishing you the best in everything.<br>
-      No questions. Just support — always.</p>
-    </div>
+  <div class="container hidden" id="yesPath">
+    <p>Okay, I understand.<br>
+    Thanks for being honest.<br>
+    I swear I won’t trouble you again — won’t text you, won’t show up, not even my face.<br>
+    Wishing you the best in everything.<br>
+    No questions. Just support — always.</p>
+  </div>
 
-    <div id="transition" class="hidden">
-      <p>Now that we’re here… just a few things I’ve been meaning to ask — nothing serious, just some curiosity I’ve been carrying for a while.</p>
-      <button onclick="showQ2()">Next</button>
-    </div>
+  <div class="container hidden" id="transition">
+    <p>Now that we’re here… just a few things I’ve been meaning to ask — nothing serious, just some curiosity I’ve been carrying for a while.</p>
+    <button onclick="showQ2()">Next</button>
+  </div>
 
-    <div id="q2" class="question hidden">
-      <h2>2. That day you posted flowers on Snap… who gave them to you?</h2>
-      <button onclick="showQ3()">I gifted them to myself — self-love 💐</button>
-      <button onclick="showQ3()">Dad or brother got them for me!</button>
-      <button onclick="showQ3()">Nothing spicy 😌</button>
-      <button onclick="showQ3()">Do flowers really need a backstory?</button>
-    </div>
+  <div class="container hidden question" id="q2">
+    <h2>2. That day you posted flowers on Snap… who gave them to you?</h2>
+    <button onclick="recordAnswer('q2', 'Self') && showQ3()">I gifted them to myself — self-love 💐</button>
+    <button onclick="recordAnswer('q2', 'Dad or brother') && showQ3()">Dad or brother got them for me!</button>
+    <button onclick="recordAnswer('q2', 'Nothing spicy') && showQ3()">Nothing spicy 😌</button>
+    <button onclick="recordAnswer('q2', 'No backstory') && showQ3()">Do flowers really need a backstory?</button>
+  </div>
 
-    <div id="q3" class="question hidden">
-      <h2>3. That dress I gave you… when did you wear it?</h2>
-      <button onclick="showQ4()">I wore it at home.</button>
-      <button onclick="showQ4()">There was an occasion... maybe.</button>
-      <button onclick="showQ4()">You'll know when you scroll through my memories 😌</button>
-      <button onclick="showQ4()">It’s still special — waiting for the right moment.</button>
-    </div>
+  <div class="container hidden question" id="q3">
+    <h2>3. That dress I gave you… when did you wear it?</h2>
+    <button onclick="recordAnswer('q3', 'Home') && showQ4()">I wore it at home.</button>
+    <button onclick="recordAnswer('q3', 'Occasion maybe') && showQ4()">There was an occasion... maybe.</button>
+    <button onclick="recordAnswer('q3', 'Check memories') && showQ4()">You'll know when you scroll through my memories 😌</button>
+    <button onclick="recordAnswer('q3', 'Special for later') && showQ4()">It’s still special — waiting for the right moment.</button>
+  </div>
 
-    <div id="q4" class="question hidden">
-      <h2>And that “I got engaged” drama? 😏</h2>
-      <p>10/10 for effort.<br>
-      Oscar-worthy performance.<br>
-      Plot twist of the year.<br>
-      But sorry — I didn’t fall for it, not even for a second.</p>
-      <button onclick="showQ5()">Next</button>
-    </div>
+  <div class="container hidden question" id="q4">
+    <h2>And that “I got engaged” drama? 😏</h2>
+    <p>10/10 for effort.<br>
+    Oscar-worthy performance.<br>
+    Plot twist of the year.<br>
+    But sorry — I didn’t fall for it, not even for a second.</p>
+    <button onclick="showQ5()">Next</button>
+  </div>
 
-    <div id="q5" class="question hidden">
-      <h2>5. Okay, now tell me — what do I do next?<br><small>(You can choose more than one)</small></h2>
-      <button onclick="showFinal()">Keep doing what you’re doing.</button>
-      <button onclick="showFinal()">Walk me from work — and stop asking every single time 😌</button>
-      <button onclick="showFinal()">Sometimes, just sit beside me in silence — that’s enough.</button>
-      <button onclick="showFinal()">Keep noticing the little things.</button>
-      <button onclick="showFinal()">Write something like this again — I liked it.</button>
-    </div>
+  <div class="container hidden question" id="q5">
+    <h2>5. Okay, now tell me — what do I do next?<br><small>(You can choose more than one)</small></h2>
+    <label><input type="checkbox" name="q5" value="Keep doing what you’re doing."> Keep doing what you’re doing.</label><br>
+    <label><input type="checkbox" name="q5" value="Walk me from work."> Walk me from work — and stop asking every single time 😌</label><br>
+    <label><input type="checkbox" name="q5" value="Sit beside me in silence."> Sometimes, just sit beside me in silence — that’s enough.</label><br>
+    <label><input type="checkbox" name="q5" value="Notice the little things."> Keep noticing the little things.</label><br>
+    <label><input type="checkbox" name="q5" value="Write something like this again."> Write something like this again — I liked it.</label><br>
+    <button onclick="recordMulti('q5'); showFinal();">Next</button>
+  </div>
 
-    <div id="final" class="question hidden">
-      <h2>💬 Final Message</h2>
-      <p>Hmmm… interesting 🤔 I knew it. But hearing it like this… just made me smile.<br>
-      Now I guess I can keep staring at you, without holding anything back.<br>
-      And maybe… keep walking you home — even when it rains, even when you’re quiet, even when you’re not in the best mood.<br>
-      Because that’s when I’d want to be there the most.</p>
-      <button onclick="showBonus()">One last thing...</button>
-    </div>
+  <div class="container hidden question" id="final">
+    <h2>💬 Final Message</h2>
+    <p>Hmmm… interesting 🤔 I knew it. But hearing it like this… just made me smile.<br>
+    Now I guess I can keep staring at you, without holding anything back.<br>
+    And maybe… keep walking you home — even when it rains, even when you’re quiet, even when you’re not in the best mood.<br>
+    Because that’s when I’d want to be there the most.</p>
+    <button onclick="showBonus()">One last thing...</button>
+  </div>
 
-    <div id="bonus" class="question hidden">
-      <h2>🌸 Do you like flowers?</h2>
-      <button>Yes — especially when they’re unexpected.</button>
-      <button>Depends on who’s giving them 😌</button>
-      <button>I like them… but don’t expect me to say it out loud.</button>
-      <button>Not really, but I appreciate the thought.</button>
-    </div>
+  <div class="container hidden question" id="bonus">
+    <h2>🌸 Do you like flowers?</h2>
+    <button onclick="recordAnswer('bonus', 'Yes')">Yes — especially when they’re unexpected.</button>
+    <button onclick="recordAnswer('bonus', 'Depends')">Depends on who’s giving them 😌</button>
+    <button onclick="recordAnswer('bonus', 'Silent yes')">I like them… but don’t expect me to say it out loud.</button>
+    <button onclick="recordAnswer('bonus', 'No')">Not really, but I appreciate the thought.</button>
   </div>
 
   <script>
-    for (let i = 0; i < 15; i++) {
-      const petal = document.createElement('div');
-      petal.className = 'petal';
-      petal.style.left = Math.random() * 100 + 'vw';
-      petal.style.animationDuration = (6 + Math.random() * 5) + 's';
-      document.body.appendChild(petal);
+    const answers = {};
+
+    function recordAnswer(questionId, answer) {
+      answers[questionId] = answer;
+      console.log(answers);
     }
 
+    function recordMulti(questionId) {
+      const selected = [];
+      document.querySelectorAll('input[name="' + questionId + '"]:checked').forEach(el => selected.push(el.value));
+      answers[questionId] = selected;
+      console.log(answers);
+    }
+
+    function startQuiz() {
+      document.getElementById("intro").style.display = "none";
+      document.getElementById("q1").style.display = "block";
+    }
     function yesPath() {
       document.getElementById("q1").style.display = "none";
       document.getElementById("yesPath").style.display = "block";
@@ -183,6 +199,15 @@
       document.getElementById("final").style.display = "none";
       document.getElementById("bonus").style.display = "block";
     }
+
+    for (let i = 0; i < 20; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDuration = (10 + Math.random() * 8) + 's';
+      document.body.appendChild(petal);
+    }
   </script>
 </body>
 </html>
+
